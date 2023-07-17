@@ -25,3 +25,6 @@ replay_pid*
 
 # IntelliJ IDEA specific directory
 .idea/
+
+# Ignore the config.ini file in the resources package
+/src/edu/laplateforme/studentmanagementsystem/resources/config.ini
