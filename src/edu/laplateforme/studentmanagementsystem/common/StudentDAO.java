@@ -74,4 +74,40 @@ public class StudentDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public void showAllStudents() {
+        establishConnection();
+        try {
+            if (this.connection != null) {
+                this.statement = this.connection.createStatement();
+                this.resultSet = this.statement.executeQuery("SELECT * FROM students");
+
+                System.out.println("""
+
+                        Student Management System
+                        -------------------------
+                        Students list :
+                        ID | first_name | last_name | age | grades
+                        ------------------------------------------""");
+
+                while (this.resultSet.next()) {
+                    String dbID = this.resultSet.getString("id");
+                    String dbFirstName = this.resultSet.getString("first_name");
+                    String dbLastName = this.resultSet.getString("last_name");
+                    String dbAge = this.resultSet.getString("age");
+                    String dbGrades = this.resultSet.getString("grades");
+
+                    System.out.println(dbID + "  | " + dbFirstName + " | " + dbLastName + " | " + dbAge + " | " + dbGrades);
+                }
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+
+        } finally {
+            closeResultSet();
+            closeStatement();
+            closeConnection();
+        }
+    }
 }
