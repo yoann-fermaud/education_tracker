@@ -75,20 +75,60 @@ public class StudentDAO {
         }
     }
 
+    public void addStudent() {
+        establishConnection();
+        try {
+            if (!this.connection.isClosed()) {
+                System.out.println("""
+                        Student Management System
+                        -------------------------
+                        Add a new student :""");
+
+                System.out.print("First name: ");
+                String dbFirstName = UserInputHandler.getUserInputString();
+
+                System.out.print("Last name: ");
+                String dbLastName = UserInputHandler.getUserInputString();
+
+                System.out.print("Age: ");
+                String dbAge = UserInputHandler.getUserInputString();
+
+                System.out.print("Grades: ");
+                String dbGrades = UserInputHandler.getUserInputString();
+
+                String valuesQuery = "'" + dbFirstName + "'" + ", " + "'" + dbLastName + "'" + ", " + "'" + dbAge + "'" + ", " + "'" + dbGrades + "'";
+
+                this.statement = this.connection.createStatement();
+                this.statement.executeUpdate("INSERT INTO students (first_name, last_name, age, grades) " +
+                        "VALUES (" + valuesQuery + ")");
+
+                System.out.println("Student added !");
+
+            } else {
+                System.out.println("db already closed");
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            closeStatement();
+            closeConnection();
+        }
+    }
+
     public void showAllStudents() {
         establishConnection();
         try {
-            if (this.connection != null) {
-                this.statement = this.connection.createStatement();
-                this.resultSet = this.statement.executeQuery("SELECT * FROM students");
-
+            if (!this.connection.isClosed()) {
                 System.out.println("""
-
                         Student Management System
                         -------------------------
                         Students list :
                         ID | first_name | last_name | age | grades
                         ------------------------------------------""");
+
+                this.statement = this.connection.createStatement();
+                this.resultSet = this.statement.executeQuery("SELECT * FROM students");
 
                 while (this.resultSet.next()) {
                     String dbID = this.resultSet.getString("id");
@@ -99,6 +139,8 @@ public class StudentDAO {
 
                     System.out.println(dbID + "  | " + dbFirstName + " | " + dbLastName + " | " + dbAge + " | " + dbGrades);
                 }
+            } else {
+                System.out.println("db already closed");
             }
 
         } catch (Exception e) {

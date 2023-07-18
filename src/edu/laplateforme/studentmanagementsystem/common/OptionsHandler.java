@@ -7,7 +7,7 @@ public class OptionsHandler {
 
         switch (option) {
             case 0:
-                System.out.println("0");
+                studentDAO.addStudent();
                 break;
             case 1:
                 System.out.println("1");
