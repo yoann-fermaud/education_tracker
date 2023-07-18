@@ -17,7 +17,7 @@ public class StudentManagementSystem {
                 """);
 
         System.out.print("Choose an option: ");
-        short userInput = UserInputHandler.getUserInput();
+        short userInput = UserInputHandler.getUserInputDigit();
         OptionsHandler.processOption(userInput);
     }
 }
