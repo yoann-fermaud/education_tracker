@@ -26,7 +26,7 @@ public class DatabaseInitializer {
             String createDatabaseQuery = "CREATE DATABASE IF NOT EXISTS students_management_system";
             String useDatabaseQuery = "USE students_management_system";
             String createTableQuery = "CREATE TABLE IF NOT EXISTS students (id INT PRIMARY KEY AUTO_INCREMENT, " +
-                    "first_name VARCHAR(25), last_name VARCHAR(25), age INT, grades INT)";
+                    "first_name VARCHAR(25), last_name VARCHAR(25), age VARCHAR(2), grades TEXT)";
 
             connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
             statement = connection.createStatement();
@@ -35,8 +35,7 @@ public class DatabaseInitializer {
             statement.executeUpdate(useDatabaseQuery);
             statement.executeUpdate(createTableQuery);
 
-            System.out.println("db created");
-
+//            System.out.println("db created");
 
         } catch (IOException | SQLException e) {
             throw new RuntimeException(e);
