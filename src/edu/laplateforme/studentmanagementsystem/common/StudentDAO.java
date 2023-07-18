@@ -2,14 +2,15 @@ package edu.laplateforme.studentmanagementsystem.common;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Properties;
 
 public class StudentDAO {
     private Connection connection;
-    public void establishConnection() {
+    private Statement statement;
+    private ResultSet resultSet;
+
+    private void establishConnection() {
         Properties properties = new Properties();
         FileInputStream inputStream = null;
 
@@ -25,10 +26,10 @@ public class StudentDAO {
             String dbFullUrl = dbUrl + dbName;
 
             this.connection = DriverManager.getConnection(dbFullUrl, dbUser, dbPassword);
-            System.out.println("connected");
+//            System.out.println("connected");
 
         } catch (IOException | SQLException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
 
         } finally {
             if (inputStream != null) {
@@ -41,16 +42,36 @@ public class StudentDAO {
         }
     }
 
-    public void closeConnection() {
+    private void closeResultSet() {
+        try {
+            if (this.resultSet != null && !this.resultSet.isClosed()) {
+                this.resultSet.close();
+//                System.out.println("resultSet closed");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void closeStatement() {
+        try {
+            if (this.statement != null && !this.statement.isClosed()) {
+                this.statement.close();
+//                System.out.println("statement closed");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void closeConnection() {
         try {
             if (this.connection != null && !this.connection.isClosed()) {
                 this.connection.close();
-                System.out.println("db closed");
-            } else {
-                System.out.println("ar closed");
+//                System.out.println("db closed");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 }
